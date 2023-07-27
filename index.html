@@ -10,12 +10,10 @@
 </head>
 <body class="bg-info ">
     <div class="container">
-        <div class="input-group m-auto w-75">
-            
-            <input type="text" id="place" class="form-control " aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-          </div>
-        <button class="btn btn-success" onclick="accessData()">Search</button>
-        <h1 class="text-center"><i class="fa-solid fa-location-dot" style="color: #ffffff;"></i>country</h1>
+         <input type="text" id="place" class="form-control " aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    <button type="button" class="btn btn-success" onclick="accessData()">Search</button> 
+                    <button onclick="getLocation()">Current Location</button> 
+             <h1 class="text-center"id="cou"><i class="fa-solid fa-location-dot" style="color: #ffffff;"></i></h1>
         <h4 class="text-center">date</h4>
         <div class=" temp " id="temp">
             <h1 class="temp2 " id="t">17</h1>
@@ -28,7 +26,7 @@
                 <div id="b" class="col-xs-3"></div>
                 <div id="b" class="col-xs-3"></div>
             </div>
-            <button onclick="getLocation()">Try It</button>
+            
             <p id="demo"></p>
 
     </div>
@@ -52,6 +50,7 @@ function showPosition(position) {
   fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?${lat}=37.42159&${long}=-122.0837&localityLanguage=en`).then(data=>data.json()).then(cData=>displayData(cData))
   function displayData(arrayData){
     city=arrayData.city
+cou.innerHTML=`${city}`
     console.log(arrayData.city);
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
 function displayTemp(cityArray){
