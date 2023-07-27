@@ -1,0 +1,27 @@
+.temp{
+    height: 200px;
+    width: 300px;
+    background-color: black;
+    margin: auto;
+    opacity: 0.3;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.temp2{
+    font-size:1000%;
+    color: beige;
+    
+}
+.container{
+ margin-top: 40px;
+    background-color: antiquewhite;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+#b{
+    width: 150px;
+    height: 100px;
+    background-color: black;
+    border-radius: 20px;
+    margin: auto;
+    opacity: 0.3;
+}

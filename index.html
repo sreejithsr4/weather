@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="./weather.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body class="bg-info ">
+    <div class="container">
+        <div class="input-group m-auto w-75">
+            
+            <input type="text" id="place" class="form-control " aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+          </div>
+        <button class="btn btn-success" onclick="accessData()">Search</button>
+        <h1 class="text-center"><i class="fa-solid fa-location-dot" style="color: #ffffff;"></i>country</h1>
+        <h4 class="text-center">date</h4>
+        <div class=" temp " id="temp">
+            <h1 class="temp2 " id="t">17</h1>
+        </div>
+        <h2 class="text-center">weather</h2>
+        
+            <div class="row">
+                <div id="b" class="col-xs-3"><i class="fa-solid fa-wind" style="color: #fcfcfc;"></i></div>
+                <div id="b" class="col-xs-3"></div>
+                <div id="b" class="col-xs-3"></div>
+                <div id="b" class="col-xs-3"></div>
+            </div>
+            <button onclick="getLocation()">Try It</button>
+            <p id="demo"></p>
+
+    </div>
+</body>
+<script>
+var x = document.getElementById("demo");
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+function showPosition(position) {
+  x.innerHTML = "Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude;
+
+  lat=position.coords.latitude
+  long=position.coords.longitude
+  console.log(long);
+  fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?${lat}=37.42159&${long}=-122.0837&localityLanguage=en`).then(data=>data.json()).then(cData=>displayData(cData))
+  function displayData(arrayData){
+    city=arrayData.city
+    console.log(arrayData.city);
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
+function displayTemp(cityArray){
+    temp1=cityArray.main.temp
+    t.innerHTML=`${temp1}`
+console.log(temp1);
+}
+  }
+}
+function accessData(){
+place=place.value
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
+function displayTemp(cityArray){
+    temp1=parseInt(cityArray.main.temp- 273.15)
+    t.innerHTML=`${temp1}`
+console.log(temp1);
+}
+}
+
+   
+  
+    </script>
+</html>
