@@ -61,7 +61,7 @@ function displayTemp(cityArray){
     t.innerHTML=`${temp1}<sup>O</sup>`
     const date = new Date().toUTCString().slice(5, 16);
     da.innerHTML=`${date}`
-    weather=cityArray.weather[0].main
+    weather=cityArray.weather[0].description
     wea.innerHTML=`${weather}`
     speed=cityArray.wind.speed
     s.innerHTML=`Wind:${speed}km/h`
