@@ -61,6 +61,7 @@ lat=position.coords.latitude
   console.log(long);
   fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}6&lon=${long}`).then(data=>data.json()).then(cData=>displayData(cData))
   function displayData(arrayData){
+    city=arrayData.address.town
     city=arrayData.address.city
 cou.innerHTML=`${city}`
 console.log(city);
