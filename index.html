@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>weather</title>
-    <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=false"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./weather.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 </head>
 <body class="bg-info ">
     <div class="container">
-         <input type="text" id="place" class="form-control " aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                    <button type="button" class="btn btn-success" onclick="accessData()">Search</button> 
-                    <button onclick="getLocation()">Current Location</button> 
-             <h1 class="text-center"id="cou"><i class="fa-solid fa-location-dot" style="color: #ffffff;"></i></h1>
-        <h4 class="text-center">date</h4>
+         <input type="text" placeholder="Cty Name" id="place" class="form-control w-50" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                    <button type="button" class="btn btn-success mt-2" onclick="accessData()">Search</button> 
+                    <button class="btn btn-success mt-2" onclick="getLocation()"><i class="fa-solid fa-location-crosshairs fa-lg" style="color: #f7f7f8;"></i>Current Location</button> 
+                    <div class="location"><i class="fa-solid fa-location-dot fa-2xl mt-4" style="color: #ffffff;"></i><h1 class="text-center"id="cou"></h1></div>
+        <h4 id="da" class="text-center"></h4>
+        <h4 id="ti" class="text-center" ></h4>
         <div class=" temp " id="temp">
-            <h1 class="temp2 " id="t">17</h1>
+            <h1 class="temp2 " id="t"></h1>
         </div>
-        <h2 class="text-center">weather</h2>
+        <h2 id="wea" class="text-center"></h2>
         
             <div class="row">
-                <div id="b" class="col-xs-3"><i class="fa-solid fa-wind" style="color: #fcfcfc;"></i></div>
-                <div id="b" class="col-xs-3"></div>
-                <div id="b" class="col-xs-3"></div>
-                <div id="b" class="col-xs-3"></div>
+                <div id="b" class="col-xs-3 "><i class="fa-solid fa-wind fa-2xl mt-4" style="color: #fcfcfc;"></i><p id="s"></p> </div>
+                <div id="b" class="col-xs-3"><i class="fa-solid fa-droplet fa-2xl mt-4" style="color: #fcfcfc;"></i><p id="p"></p></div>
+                <div id="b" class="col-xs-3"><i class="fa-solid fa-temperature-three-quarters fa-2xl mt-4" style="color: #fafcff;"></i><p id="f"></p></div>
+                <div id="b" class="col-xs-3"><i class="fa-solid fa-cloud-sun fa-2xl mt-4" style="color: #fafafa;"></i><p id="sun"></p></div>
             </div>
             
             <p id="demo"></p>
@@ -44,21 +44,36 @@ function getLocation() {
 function showPosition(position) {
   x.innerHTML = "Latitude: " + position.coords.latitude +
   "<br>Longitude: " + position.coords.longitude;
-
-  lat=position.coords.latitude
+lat=position.coords.latitude
   long=position.coords.longitude
-
-  console.log(long);
   fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?${lat}=37.42159&${long}=-122.0837&localityLanguage=en`).then(data=>data.json()).then(cData=>displayData(cData))
   function displayData(arrayData){
     city=arrayData.locality
 cou.innerHTML=`${city}`
-    console.log(arrayData.city);
+    //console.log(arrayData.city);
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
 function displayTemp(cityArray){
     temp1=parseInt(cityArray.main.temp- 273.15)
-    t.innerHTML=`${temp1}`
-console.log(temp1);
+    t.innerHTML=`${temp1}<sup>O</sup>`
+    const date = new Date().toUTCString().slice(5, 16);
+    da.innerHTML=`${date}`
+    weather=cityArray.weather[0].main
+    wea.innerHTML=`${weather}`
+    speed=cityArray.wind.speed
+    s.innerHTML=`Speed:${speed}km/h`
+    pre=cityArray.main.humidity
+    p.innerHTML=`Humidity:${pre}%`
+    feel=parseInt(cityArray.main.feels_like-273.15)
+    f.innerHTML=`Feels Like :${feel}`
+    dateObj = new Date(cityArray.sys.sunrise * 1000);
+utcString = dateObj.toLocaleString()
+time = utcString.slice(-11, -4);
+sun.innerHTML=`Sunrise: ${time}`
+console.log(Math.floor(new Date().getTime()/1000.0) );
+date1=new Date()
+date2=date1.toLocaleString().slice(-11, -4);
+ti.innerHTML=`${date2}`
+
 }
   }
 }
@@ -68,10 +83,28 @@ place=place.value
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
 function displayTemp(cityArray){
     temp1=parseInt(cityArray.main.temp- 273.15)
-    t.innerHTML=`${temp1}`
-    cou.innerHTML=`${place}`
-console.log(temp1);
-}
+    t.innerHTML=`${temp1}<sup>O</sup>`
+    const date = new Date().toUTCString().slice(5, 16);
+    da.innerHTML=`${date}`
+    weather=cityArray.weather[0].main
+    wea.innerHTML=`${weather}`
+    speed=cityArray.wind.speed
+    s.innerHTML=`Speed:${speed}km/h`
+    pre=cityArray.main.humidity
+    p.innerHTML=`Humidity:${pre}%`
+    feel=parseInt(cityArray.main.feels_like-273.15)
+    f.innerHTML=`Feels Like :${feel}`
+    dateObj = new Date(cityArray.sys.sunrise * 1000);
+utcString = dateObj.toLocaleString()
+time = utcString.slice(-11, -4);
+sun.innerHTML=`Sunrise: ${time}`
+console.log(Math.floor(new Date().getTime()/1000.0) );
+date1=new Date()
+date2=date1.toLocaleString().slice(-11, -4);
+ti.innerHTML=`${date2}`
+city=cityArray.name
+cou.innerHTML=`${city}`
+ }
 }
 
    
