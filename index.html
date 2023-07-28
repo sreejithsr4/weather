@@ -45,7 +45,6 @@ lat=position.coords.latitude
 function displayTemp(cityArray){
     temp1=parseInt(cityArray.main.temp- 273.15)
     date3 = new Date().toLocaleString();
-    console.log(date3);
      weather=cityArray.weather[0].description
     speed=cityArray.wind.speed
    pre=cityArray.main.humidity
@@ -53,7 +52,6 @@ function displayTemp(cityArray){
     dateObj = new Date(cityArray.sys.sunrise * 1000);
 utcString = dateObj.toLocaleString()
 time = utcString.slice(-11, -4);
-
 result.innerHTML=`<div class="location"><i class="fa-solid fa-location-dot fa-2xl " style="color: #ffffff;"></i><h1 class="text-center" id="cou">${dist}</h1></div>
                   <h4 id="da" class="text-center">${date3}</h4>
                   <div class=" temp " id="temp">
@@ -74,7 +72,7 @@ place=pl.value
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
 function displayTemp(cityArray){
     temp1=parseInt(cityArray.main.temp- 273.15)
-     const date = new Date().toUTCString().slice(5, 16);
+    date3 = new Date().toLocaleString();
     weather=cityArray.weather[0].main
     speed=cityArray.wind.speed
     pre=cityArray.main.humidity
@@ -83,12 +81,9 @@ function displayTemp(cityArray){
 utcString = dateObj.toLocaleString()
 time = utcString.slice(-11, -4);
 console.log(Math.floor(new Date().getTime()/1000.0) );
-date1=new Date()
-date2=date1.toLocaleString().slice(-11, -4);
 city=cityArray.name
 result.innerHTML=`<div class="location"><i class="fa-solid fa-location-dot fa-2xl " style="color: #ffffff;"></i><h1 class="text-center" id="cou">${city}</h1></div>
-                  <h4 id="da" class="text-center">${date}</h4>
-                  <h4 id="ti" class="text-center" >${date2}</h4>
+                  <h4 id="da" class="text-center">${date3}</h4>
                   <div class=" temp " id="temp">
                       <h1 class="temp2 " id="t">${temp1}°C</h1>
                   </div>
