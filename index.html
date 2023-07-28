@@ -10,7 +10,7 @@
 </head>
 <body >
     
-        <video playsinline autoplay muted loop poster="cake.jpg">
+        <video playsinline autoplay muted loop>
           <source src="./image/Particle_Wave_4K_Motion_Background_Loop.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
@@ -30,6 +30,7 @@
                     <h1 class="temp2 " id="t"></h1>
                 </div>
                 <h2 id="wea" class="text-center"></h2>
+                <p id="v" class="text-center"></p>
                 
                     <div class="row">
                         <div id="b" class="col-xs-3 "><i class="fa-solid fa-wind fa-2xl mt-4" style="color: #fcfcfc;"></i><p id="s"></p> </div>
@@ -61,13 +62,29 @@ lat=position.coords.latitude
   console.log(long);
   fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}6&lon=${long}`).then(data=>data.json()).then(cData=>displayData(cData))
   function displayData(arrayData){
-    city=arrayData.address.town
+    town=arrayData.address.town
     city=arrayData.address.city
-    city=arrayData.address.village
-cou.innerHTML=`${city}`
-console.log(city);
+    village=arrayData.address.village
+    if(city==undefined){
+        
+        if(town==undefined){
+            v.innerHTML=`${village}`
+        }
+        else{
+            v.innerHTML=`${town}`
+
+        }
+    }
+    else{
+        v.innerHTML=`${city}`
+    }
+   
+    state=arrayData.address.state_district
+    dist=state.slice(0,-9)
+cou.innerHTML=`${dist}`
+// console.log(state.slice(0,-9));
     
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${dist}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
 function displayTemp(cityArray){
     temp1=parseInt(cityArray.main.temp- 273.15)
     t.innerHTML=`${temp1}<sup>O</sup>`
