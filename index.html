@@ -16,36 +16,18 @@
         </video>
       
     <div class="container">
-        
-      
-          
-             
-                 <input type="text" placeholder="Cty Name" id="pl" class="form-control w-50" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                            <button type="button" class="btn btn-dark mt-2" onclick="accessData()">Search</button> 
-                            <button class="btn btn-dark mt-2" onclick="getLocation()"><i class="fa-solid fa-location-crosshairs fa-lg" style="color: #f7f7f8;"></i>Current Location</button> 
-                            <div class="location"><i class="fa-solid fa-location-dot fa-2xl " style="color: #ffffff;"></i><h1 class="text-center"id="cou"></h1></div>
-                <h4 id="da" class="text-center"></h4>
-                <h4 id="ti" class="text-center" ></h4>
-                <div class=" temp " id="temp">
-                    <h1 class="temp2 " id="t"></h1>
-                </div>
-                <h2 id="wea" class="text-center"></h2>
-               
-                
-                    <div class="row">
-                        <div id="b" class="col-xs-3 "><i class="fa-solid fa-wind fa-2xl mt-4" style="color: #fcfcfc;"></i><p id="s"></p> </div>
-                        <div id="b" class="col-xs-3"><i class="fa-solid fa-droplet fa-2xl mt-4" style="color: #fcfcfc;"></i><p id="p"></p></div>
-                        <div id="b" class="col-xs-3"><i class="fa-solid fa-temperature-three-quarters fa-2xl mt-4" style="color: #fafcff;"></i><p id="f"></p></div>
-                        <div id="b" class="col-xs-3"><i class="fa-solid fa-cloud-sun fa-2xl mt-4" style="color: #fafafa;"></i><p id="sun"></p></div>
-                    </div>
-             
-    
-        
-    
-</div>
+    <input type="text" placeholder="Cty Name" id="pl" class="form-control w-50" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                            <div id="bt">
+                              <button type="button" class="btn btn-dark mt-2" onclick="accessData()">Search</button> 
+                              <button  class="btn btn-dark mt-2 ms-2" onclick="getLocation()"><i class="fa-solid fa-location-crosshairs fa-lg" style="color: #f7f7f8;"></i>Current Location</button> 
+                            </div>
+                        <div id="result">
+                    
+               </div>
+              </div>
 </body>
 <script>
-var x = document.getElementById("demo");
+// var x = document.getElementById("demo");
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -54,77 +36,70 @@ function getLocation() {
   }
 }
 function showPosition(position) {
-//   x.innerHTML = "Latitude: " + position.coords.latitude +
-//   "<br>Longitude: " + position.coords.longitude;
 lat=position.coords.latitude
   long=position.coords.longitude
-  console.log(lat);
-  console.log(long);
-  fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${long}&apiKey=a23edef5efe7487a9e607a63c09cc982`).then(data=>data.json()).then(cData=>displayData(cData))
+ fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${lat}&lon=${long}&apiKey=a23edef5efe7487a9e607a63c09cc982`).then(data=>data.json()).then(cData=>displayData(cData))
   function displayData(arrayData){
     dist=arrayData.features[0].properties.county
-    console.log(dist);
-
- cou.innerHTML=`${dist}`
-
-    
-    fetch(`https://api.openweathermap.org/data/2.5/weather?q=${dist}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
+ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${dist}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
 function displayTemp(cityArray){
     temp1=parseInt(cityArray.main.temp- 273.15)
-    t.innerHTML=`${temp1}<sup>O</sup>`
-    const date = new Date().toUTCString().slice(5, 16);
-    da.innerHTML=`${date}`
-    weather=cityArray.weather[0].description
-    wea.innerHTML=`${weather}`
+    date3 = new Date().toLocaleString();
+    console.log(date3);
+     weather=cityArray.weather[0].description
     speed=cityArray.wind.speed
-    s.innerHTML=`Wind:${speed}km/h`
-    pre=cityArray.main.humidity
-    p.innerHTML=`Humidity:${pre}%`
-    feel=parseInt(cityArray.main.feels_like-273.15)
-    f.innerHTML=`Feels Like :${feel}<sup>O</sup>`
+   pre=cityArray.main.humidity
+     feel=parseInt(cityArray.main.feels_like-273.15)
     dateObj = new Date(cityArray.sys.sunrise * 1000);
 utcString = dateObj.toLocaleString()
 time = utcString.slice(-11, -4);
-sun.innerHTML=`Sunrise: ${time}`
-console.log(Math.floor(new Date().getTime()/1000.0) );
-date1=new Date()
-date2=date1.toLocaleString().slice(-11, -4);
-ti.innerHTML=`${date2}`
 
+result.innerHTML=`<div class="location"><i class="fa-solid fa-location-dot fa-2xl " style="color: #ffffff;"></i><h1 class="text-center" id="cou">${dist}</h1></div>
+                  <h4 id="da" class="text-center">${date3}</h4>
+                  <div class=" temp " id="temp">
+                      <h1 class="temp2 " id="t">${temp1}°C</h1>
+                  </div>
+                  <h2 id="wea" class="text-center">${weather}</h2>
+                  <div class="row">
+                          <div id="b" class="col-xs-3 "><i class="fa-solid fa-wind fa-2xl mt-4" style="color: #fcfcfc;"></i><p id="s">Wind:${speed}km/h</p> </div>
+                          <div id="b" class="col-xs-3"><i class="fa-solid fa-droplet fa-2xl mt-4" style="color: #fcfcfc;"></i><p id="p">Humidity:${pre}%</p></div>
+                          <div id="b" class="col-xs-3"><i class="fa-solid fa-temperature-three-quarters fa-2xl mt-4" style="color: #fafcff;"></i><p id="f">Feels Like :${feel}°C</p></div>
+                          <div id="b" class="col-xs-3"><i class="fa-solid fa-cloud-sun fa-2xl mt-4" style="color: #fafafa;"></i><p id="sun">Sunrise: ${time}</p></div>
+                      </div>`
 }
   }
 }
-
 function accessData(){
 place=pl.value
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${place}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
 function displayTemp(cityArray){
     temp1=parseInt(cityArray.main.temp- 273.15)
-    t.innerHTML=`${temp1}<sup>O</sup>`
-    const date = new Date().toUTCString().slice(5, 16);
-    da.innerHTML=`${date}`
+     const date = new Date().toUTCString().slice(5, 16);
     weather=cityArray.weather[0].main
-    wea.innerHTML=`${weather}`
     speed=cityArray.wind.speed
-    s.innerHTML=`Wind:${speed}km/h`
     pre=cityArray.main.humidity
-    p.innerHTML=`Humidity:${pre}%`
     feel=parseInt(cityArray.main.feels_like-273.15)
-    f.innerHTML=`Feels Like :${feel}<sup>O</sup>`
     dateObj = new Date(cityArray.sys.sunrise * 1000);
 utcString = dateObj.toLocaleString()
 time = utcString.slice(-11, -4);
-sun.innerHTML=`Sunrise: ${time}`
 console.log(Math.floor(new Date().getTime()/1000.0) );
 date1=new Date()
 date2=date1.toLocaleString().slice(-11, -4);
-ti.innerHTML=`${date2}`
 city=cityArray.name
-cou.innerHTML=`${city}`
+result.innerHTML=`<div class="location"><i class="fa-solid fa-location-dot fa-2xl " style="color: #ffffff;"></i><h1 class="text-center" id="cou">${city}</h1></div>
+                  <h4 id="da" class="text-center">${date}</h4>
+                  <h4 id="ti" class="text-center" >${date2}</h4>
+                  <div class=" temp " id="temp">
+                      <h1 class="temp2 " id="t">${temp1}°C</h1>
+                  </div>
+                  <h2 id="wea" class="text-center">${weather}</h2>
+                  <div class="row">
+                          <div id="b" class="col-xs-3 "><i class="fa-solid fa-wind fa-2xl mt-4" style="color: #fcfcfc;"></i><p id="s">Wind:${speed}km/h</p> </div>
+                          <div id="b" class="col-xs-3"><i class="fa-solid fa-droplet fa-2xl mt-4" style="color: #fcfcfc;"></i><p id="p">Humidity:${pre}%</p></div>
+                          <div id="b" class="col-xs-3"><i class="fa-solid fa-temperature-three-quarters fa-2xl mt-4" style="color: #fafcff;"></i><p id="f">Feels Like :${feel}°C</p></div>
+                          <div id="b" class="col-xs-3"><i class="fa-solid fa-cloud-sun fa-2xl mt-4" style="color: #fafafa;"></i><p id="sun">Sunrise: ${time}</p></div>
+                      </div>`
  }
 }
-
-   
-  
     </script>
 </html>
