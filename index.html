@@ -10,9 +10,15 @@
 </head>
 <body >
     
+        <video playsinline autoplay muted loop poster="cake.jpg">
+          <source src="./image/Particle_Wave_4K_Motion_Background_Loop.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      
     <div class="container">
         
-            
+      
+          
              
                  <input type="text" placeholder="Cty Name" id="pl" class="form-control w-50" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                             <button type="button" class="btn btn-dark mt-2" onclick="accessData()">Search</button> 
@@ -34,7 +40,8 @@
              
     
         
-    </div>
+    
+</div>
 </body>
 <script>
 var x = document.getElementById("demo");
@@ -50,10 +57,13 @@ function showPosition(position) {
 //   "<br>Longitude: " + position.coords.longitude;
 lat=position.coords.latitude
   long=position.coords.longitude
-  fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?${lat}=37.42159&${long}=-122.0837&localityLanguage=en`).then(data=>data.json()).then(cData=>displayData(cData))
+  console.log(lat);
+  console.log(long);
+  fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}6&lon=${long}`).then(data=>data.json()).then(cData=>displayData(cData))
   function displayData(arrayData){
-    city=arrayData.locality
+    city=arrayData.address.city
 cou.innerHTML=`${city}`
+console.log(city);
     
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json()).then(city=>displayTemp(city))
 function displayTemp(cityArray){
